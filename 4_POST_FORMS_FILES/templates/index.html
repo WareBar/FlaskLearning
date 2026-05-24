@@ -1,0 +1,306 @@
+{% include "base.html" %}
+
+{% block content %}
+
+<div class="page-wrapper">
+
+  <!-- Left: Login -->
+  <div class="panel login-panel">
+    <div class="login-card">
+      <div class="login-header">
+        <h1>Welcome back</h1>
+        <p>Sign in to your account</p>
+      </div>
+
+      <form action="{{ url_for('login') }}" method="POST">
+        <div class="form-group">
+          <label for="email_input">Email</label>
+          <input name="email" placeholder="example@gmail.com" id="email_input" type="email">
+        </div>
+
+        <div class="form-group">
+          <div class="label-row">
+            <label for="password_input">Password</label>
+            <a href="#">Forgot password?</a>
+          </div>
+          <input type="password" name="password" id="password_input" placeholder="••••••••">
+        </div>
+
+        <button type="submit" class="btn-primary">Sign in</button>
+      </form>
+
+      <p class="signup-prompt">
+        Don't have an account? <a href="#">Sign up</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Right: File Upload -->
+  <div class="panel upload-panel">
+    <div class="upload-card">
+      <div class="login-header">
+        <h1>Upload file</h1>
+        <p>Spreadsheet files only (.xlsx)</p>
+      </div>
+
+      <form action="{{ url_for('file_upload') }}" method="POST" enctype="multipart/form-data">
+        {# enctype="multipart/form-data" is required when sending files — it encodes binary data correctly #}
+
+        <div
+          class="drop-zone"
+          id="drop-zone"
+          onclick="document.getElementById('file_input').click()"
+          ondragover="event.preventDefault(); this.classList.add('drag-over')"
+          ondragleave="this.classList.remove('drag-over')"
+          ondrop="handleDrop(event)"
+        >
+          <div class="drop-icon">↑</div>
+          <p class="drop-title">Click to browse or drag &amp; drop</p>
+          <p class="drop-sub">Accepts .xlsx files</p>
+
+
+          <input
+            type="file"
+            name="file"
+            id="file_input"
+            accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel, text/plain"
+            style="display: none;"
+            onchange="showFileName(this)"
+            required
+          >
+        </div>
+
+        <div class="file-display" id="file-display" style="display: none;">
+          <span class="file-icon">📄</span>
+          <span id="file-name-text"></span>
+          <button type="button" class="file-clear" onclick="clearFile()">✕</button>
+        </div>
+
+        <button type="submit" class="btn-primary">Upload file</button>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<style>
+  .page-wrapper {
+    background: #f5f5f3;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .panel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem;
+  }
+
+  .login-panel {
+    border-right: 1px solid #e0e0de;
+  }
+
+  .login-card,
+  .upload-card {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .login-header {
+    margin-bottom: 2rem;
+  }
+
+  .login-header h1 {
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin: 0 0 4px;
+    color: #1a1a1a;
+  }
+
+  .login-header p {
+    font-size: 0.875rem;
+    color: #666;
+    margin: 0;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 1rem;
+  }
+
+  .form-group label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #555;
+  }
+
+  .label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .label-row a {
+    font-size: 0.75rem;
+    color: #555;
+    text-decoration: none;
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    box-sizing: border-box;
+    outline: none;
+    background: #fff;
+  }
+
+  .form-group input:focus {
+    border-color: #aaa;
+  }
+
+  .btn-primary {
+    width: 100%;
+    padding: 10px;
+    margin-top: 0.5rem;
+    background: #1a1a1a;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .signup-prompt {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #666;
+    margin: 1.25rem 0 0;
+  }
+
+  .signup-prompt a {
+    color: #1a1a1a;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  /* Upload zone */
+  .drop-zone {
+    border: 1.5px dashed #ccc;
+    border-radius: 12px;
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    background: #fff;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    margin-bottom: 0.75rem;
+  }
+
+  .drop-zone:hover,
+  .drop-zone.drag-over {
+    border-color: #888;
+    background: #f0f0ee;
+  }
+
+  .drop-icon {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 12px;
+    background: #f0f0ee;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #888;
+  }
+
+  .drop-title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin: 0 0 4px;
+  }
+
+  .drop-sub {
+    font-size: 0.75rem;
+    color: #888;
+    margin: 0;
+  }
+
+  .file-display {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: #fff;
+    border: 1px solid #e0e0de;
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    font-size: 0.8rem;
+    color: #333;
+  }
+
+  .file-display span:nth-child(2) {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .file-clear {
+    background: none;
+    border: none;
+    color: #aaa;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0;
+    line-height: 1;
+  }
+
+  @media (max-width: 640px) {
+    .page-wrapper {
+      flex-direction: column;
+    }
+    .login-panel {
+      border-right: none;
+      border-bottom: 1px solid #e0e0de;
+    }
+  }
+</style>
+
+<script>
+  function showFileName(input) {
+    const display = document.getElementById('file-display');
+    const nameEl = document.getElementById('file-name-text');
+    if (input.files && input.files[0]) {
+      nameEl.textContent = input.files[0].name;
+      display.style.display = 'flex';
+    }
+  }
+
+  function clearFile() {
+    document.getElementById('file_input').value = '';
+    document.getElementById('file-display').style.display = 'none';
+  }
+
+  function handleDrop(e) {
+    e.preventDefault();
+    document.getElementById('drop-zone').classList.remove('drag-over');
+    const input = document.getElementById('file_input');
+    const dt = new DataTransfer();
+    dt.items.add(e.dataTransfer.files[0]);
+    input.files = dt.files;
+    showFileName(input);
+  }
+</script>
+
+{% endblock %}

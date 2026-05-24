@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+    FLASK HTLM TEMPLATE RENDER
+{% endblock %}
+
+
+
+{% block content %}
+    <!--
+     those words wrapped by curcly braces are variables or values passed to "render_templates" function from the url function that renders this template 
+     -->
+   
+    <h1>HELLO WORLD</h1>
+    <p>{{ value1 }}</p>
+    <p>{{ value2 }}</p>
+
+    <!-- LOOPING -->
+    <p>LIST</p>
+    
+    <ul>
+        {% for item in myContents %}
+            <li {% if (item) == "CA" %} style="color: red" {% endif %}>{{item}}</li>
+        {% endfor %}
+    </ul>
+
+
+    <a href="{{ url_for("filters") }}">Filters page</a>
+
+{% endblock %}

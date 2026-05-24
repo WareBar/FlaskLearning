@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %}
+            FLASK APP
+        {% endblock %}
+    </title>
+</head>
+<body>
+    
+    <nav 
+    style="width: 100%; border-width: 2px; background-color: blueviolet;"
+    >NAVIGATIN HERE(from base template)</nav>
+
+
+    {% block content %}
+
+
+    {% endblock %}
+
+
+    <footer
+    style="width: 100%; border-width: 2px; background-color:chocolate;"
+    >
+        FOOTER HERE(from base template)
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,2 @@
+IS FLASK CLASS OR FUNCTION ORIENTED?
+- ITS MAINLY FUNCTION-ORIENTED, but only supports class orientation

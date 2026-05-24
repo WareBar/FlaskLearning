@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+    FILTERS
+{% endblock %}
+
+
+
+{% block content %}
+
+    <!-- filters -->
+    <h1>Filters</h1>
+    <p>Filters are similar to function, you put it beside the text and the filters will be applied</p>
+
+    <p>
+        <span>{{ text|upper }}</span>
+        <br>
+        <span>"upper" filters = make all the letter in uppercase</span>
+    </p>
+
+    
+    <p>
+        <span>{{ text|title }}</span>
+        <br>
+        <span>"title" filters = make the first letter of each word uppercase</span>
+    </p>
+
+    <p>
+        <span>{{ text|replace("l", "L") }}</span>
+        <br>
+        <span>"replace" filters = replaces "l" letters from the text with "L"</span>
+    </p>
+
+    <p>
+        <span>{{ text|reverse_string }}</span>
+        <br>
+        <span>"reverse_string" filters = custom filters that reverses the string</span>
+    </p>
+
+    <a href="{{ url_for("index") }}">Index page</a>
+
+
+
+{% endblock %}
