@@ -1,0 +1,28 @@
+{% include "base.html" %}
+
+
+
+
+{% block content %}
+    <h1>Session</h1>
+    <p>{{ message }}</p>
+
+
+
+    <a href="{{ url_for('set_data') }}">Set Session Data</a>
+    <a href="{{ url_for('get_data') }}">Get Session Data</a>
+    <a href="{{ url_for('clean_session') }}">Clean Session Data</a>
+    <br>
+    <hr>
+    <br>
+    <h1>Cookie</h1>
+    <a href="{{ url_for('set_cookie') }}">Set Cookie Data</a>
+    <a href="{{ url_for('get_cookie') }}">Get Cookie Data</a>
+    <a href="{{ url_for('remove_cookie') }}">Clear Cookie Data</a>
+    <br>
+    <hr>
+    <br>
+    <a href="{{ url_for('login') }}">Login</a>
+
+
+{% endblock %}
